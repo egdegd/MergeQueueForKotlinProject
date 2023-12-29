@@ -1,8 +1,11 @@
-<#-- @ftlvariable name="commitsList" type="kotlin.collections.List<kotlin.Pair<String, com.example.GitUser>>" -->
+<#-- @ftlvariable name="commitsList" type="kotlin.collections.List<kotlin.Triple<String, com.example.GitUser, String>>" -->
 <#import "_layout.ftl" as layout />
 <@layout.header>
     <#list commitsList as commit>
 		<div>
+			<p style="color: #d35e06;">
+				commit ${commit.third}
+			</p>
 			<p>
 				Author: ${commit.second.name} ${commit.second.email}
 			</p>
@@ -13,6 +16,7 @@
 				${commit.first}
 			</p>
 		</div>
+		<hr>
     </#list>
 	<hr>
 </@layout.header>
