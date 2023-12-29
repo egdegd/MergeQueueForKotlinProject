@@ -1,10 +1,16 @@
-<#-- @ftlvariable name="commitsList" type="kotlin.collections.List<String>" -->
+<#-- @ftlvariable name="commitsList" type="kotlin.collections.List<kotlin.Pair<String, com.example.GitUser>>" -->
 <#import "_layout.ftl" as layout />
 <@layout.header>
-    <#list commitsList?reverse as commit>
+    <#list commitsList as commit>
 		<div>
 			<p>
-                ${commit}
+				Author: ${commit.second.name} ${commit.second.email}
+			</p>
+			<p>
+				Date: ${commit.second.date}
+			</p>
+			<p>
+				${commit.first}
 			</p>
 		</div>
     </#list>

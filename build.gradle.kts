@@ -27,7 +27,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
     implementation("io.ktor:ktor-server-freemarker:$ktor_version")
-    implementation("org.jsoup:jsoup:1.14.3")
+    implementation ("com.google.code.gson:gson:2.8.9")
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }

@@ -1,18 +1,23 @@
 package com.example
 
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Element
-import org.jsoup.select.Elements
+import com.google.gson.Gson
+import okhttp3.OkHttpClient
+import okhttp3.Request
 
-fun commitTextFromMB1(elem: Element): String {
-    return elem.childNodes().filter { it.childNodeSize() > 0 }
-        .joinToString(separator = "") { it.childNodes().first().toString() }
-}
-fun repoLog(repoName: String): List<String> {
-    val requestUrl = "$repoName/commits"
-    val doc = Jsoup.connect(requestUrl).get()
-    val sections: Elements = doc.getElementsByClass("mb-1")
-    return sections.map{
-        commitTextFromMB1(it)
-    }.toList().reversed()
+fun repoLog(authorName: String, repoName: String): List<Pair<String, GitUser>>? {
+    val client = OkHttpClient()
+    val githubUrl = "https://api.github.com/repos/$authorName/$repoName/commits?per_page=100";
+    val request = Request.Builder()
+        .url(githubUrl)
+        .build()
+
+    client.newCall(request).execute().use { response ->
+        if (response.isSuccessful) {
+            val responseBody = response.body?.string()
+            val gson = Gson()
+            val commit: Commits = gson.fromJson("{\"commits\": $responseBody}", Commits::class.java)
+            return commit.commits.map { Pair(it.commit.message, it.commit.author)}
+        }
+    }
+    return null
 }

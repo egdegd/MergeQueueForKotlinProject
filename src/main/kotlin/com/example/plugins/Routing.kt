@@ -11,16 +11,21 @@ import io.ktor.server.util.*
 fun Application.configureRouting() {
     routing {
         get("/") {
-            call.respond(FreeMarkerContent("searchrepo.ftl", model = null))
+            call.respond(FreeMarkerContent("searchRepo.ftl", model = null))
         }
         post {
             val formParameters = call.receiveParameters()
-            val reponame = formParameters.getOrFail("reponame")
+            val authorName = formParameters.getOrFail("authorName")
+            val repoName = formParameters.getOrFail("repoName")
             try {
-                val commitsList = repoLog(reponame)
-                call.respond(FreeMarkerContent("listOfCommits.ftl",mapOf("commitsList" to commitsList)))
+                val commitsList = repoLog(authorName, repoName)
+                if (commitsList == null) {
+                    call.respond(FreeMarkerContent("searchRepoError.ftl", model = null))
+                } else {
+                    call.respond(FreeMarkerContent("listOfCommits.ftl",mapOf("commitsList" to commitsList)))
+                }
             } catch (e: Exception) {
-                call.respond(FreeMarkerContent("searchrepoerror.ftl", model = null))
+                call.respond(FreeMarkerContent("searchRepoError.ftl", model = null))
             }
 
         }
