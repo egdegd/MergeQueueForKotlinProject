@@ -11,7 +11,6 @@ import org.jsoup.Jsoup
 import org.jsoup.select.Elements
 
 fun main() {
-//    repoLog("https://github.com/ktorio/ktor-documentation")
     embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
         .start(wait = true)
 }
